@@ -2,11 +2,16 @@ import { useState } from 'react'
 
 import Die from './Die'
 
+function getRandomArbitrary(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
+function arrTenRandNumbers() {
+    return Array(10).fill(0).map(x => getRandomArbitrary(1,7))
+}
+
 function App() {
-    const dies = []
-    for (let i = 0; i < 10; i++) {
-        dies.push(<Die number={i % 6 + 1}/>)
-    }
+    const dies = arrTenRandNumbers().map(x => <Die number={x}/>)
     return (
         <main>
             <div className="die-container">
