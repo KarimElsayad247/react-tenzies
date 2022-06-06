@@ -11,12 +11,20 @@ function arrTenRandNumbers() {
 }
 
 function App() {
-    const dies = arrTenRandNumbers().map(x => <Die number={x}/>)
+
+    const [dice, setDice] = useState(() => arrTenRandNumbers())
+
+    function roll() {
+        setDice(arrTenRandNumbers())
+    }
+
+    const diceElems = dice.map((x, i) => <Die key={i} number={x}/>)
     return (
         <main>
             <div className="die-container">
-                {dies}
+                {diceElems}
             </div>  
+            <button className='roll-button' onClick={roll} >Roll</button>
         </main>
     )
 }
