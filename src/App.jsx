@@ -17,7 +17,7 @@ function App() {
             return {
                 id: nanoid(),
                 value: num,
-                isHeld: false
+                isHeld: true
             };
         });
     }
@@ -28,7 +28,14 @@ function App() {
         setDice(tenRandomDice());
     }
 
-    const diceElems = dice.map(die => <Die key={die.id} number={die.value}/>);
+    const diceElems = dice.map(die => (
+        <Die 
+            key={die.id} 
+            number={die.value} 
+            isHeld={die.isHeld}
+        />
+    ));
+
     return (
         <main>
             <div className="die-container">

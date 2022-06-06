@@ -41,6 +41,10 @@ main {
     cursor: pointer;
 }
 
+.die.held {
+    background-color: #59E391;
+}
+
 .die > p {
     font-style: normal;
     font-weight: 700;
