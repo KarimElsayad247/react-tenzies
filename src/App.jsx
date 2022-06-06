@@ -1,5 +1,5 @@
 import { useState } from 'react'
-
+import { nanoid } from 'nanoid';
 import Die from './Die'
 
 function getRandomArbitrary(min, max) {
@@ -7,18 +7,28 @@ function getRandomArbitrary(min, max) {
 }
 
 function arrTenRandNumbers() {
-    return Array(10).fill(0).map(x => getRandomArbitrary(1,7))
+    return Array(10).fill(0).map(x => getRandomArbitrary(1,7));
 }
 
 function App() {
-
-    const [dice, setDice] = useState(() => arrTenRandNumbers())
-
-    function roll() {
-        setDice(arrTenRandNumbers())
+    
+    function tenRandomDice() {
+        return arrTenRandNumbers().map(num => {
+            return {
+                id: nanoid(),
+                value: num,
+                isHeld: false
+            };
+        });
     }
 
-    const diceElems = dice.map((x, i) => <Die key={i} number={x}/>)
+    const [dice, setDice] = useState(() => tenRandomDice());
+
+    function roll() {
+        setDice(tenRandomDice());
+    }
+
+    const diceElems = dice.map(die => <Die key={die.id} number={die.value}/>);
     return (
         <main>
             <div className="die-container">
