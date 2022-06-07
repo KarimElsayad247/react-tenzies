@@ -24,6 +24,13 @@ function App() {
 
     const [dice, setDice] = useState(() => tenRandomDice());
 
+    function holdDice(id) {
+        setDice(prevDice => prevDice.map(die => ({
+            ...die,
+            isHeld: die.id == id ? !die.isHeld : die.isHeld
+        })))
+    }
+
     function roll() {
         setDice(tenRandomDice());
     }
@@ -33,6 +40,7 @@ function App() {
             key={die.id} 
             number={die.value} 
             isHeld={die.isHeld}
+            hold={() => holdDice(die.id)}
         />
     ));
 
