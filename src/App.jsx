@@ -17,13 +17,15 @@ function App() {
             return {
                 id: nanoid(),
                 value: num,
-                isHeld: true
+                isHeld: false
             };
         });
     }
 
     const [dice, setDice] = useState(() => tenRandomDice());
 
+    // Invert the isHeld property of the clicked die
+    // The clicked die is the one providing id
     function holdDice(id) {
         setDice(prevDice => prevDice.map(die => ({
             ...die,
@@ -32,7 +34,10 @@ function App() {
     }
 
     function roll() {
-        setDice(tenRandomDice());
+        setDice(prevDice => prevDice.map(die => ({
+            ...die, 
+            value: die.isHeld ? die.value : getRandomArbitrary(1, 7)
+        })));
     }
 
     const diceElems = dice.map(die => (
