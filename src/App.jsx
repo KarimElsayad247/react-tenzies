@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { nanoid } from 'nanoid';
+import Confetti, { ReactConfetti } from 'react-confetti';
 import Die from './Die'
 
 function getRandomArbitrary(min, max) {
@@ -22,7 +23,20 @@ function App() {
         });
     }
 
+    // Whether player won the game or not
+    const [tenzies, setTenzies] = useState(false)
+
+    // Initial values for dice
     const [dice, setDice] = useState(() => tenRandomDice());
+
+    useEffect(() => {
+        const firstNum = dice[0].value;
+        const hasWon = dice.every(die => die.isHeld && die.value === firstNum);
+        if (hasWon) {
+            setTenzies(true)
+            console.log("You win!");
+        }
+    }, [dice])
 
     // Invert the isHeld property of the clicked die
     // The clicked die is the one providing id
@@ -34,6 +48,11 @@ function App() {
     }
 
     function roll() {
+        if (tenzies) {
+            setDice(tenRandomDice());
+            setTenzies(false);
+            return;
+        }
         setDice(prevDice => prevDice.map(die => ({
             ...die, 
             value: die.isHeld ? die.value : getRandomArbitrary(1, 7)
@@ -51,6 +70,7 @@ function App() {
 
     return (
         <main>
+            {tenzies && <Confetti />}
             <div className='text-container'>
                 <h1 className="title">Tenzies</h1>
                 <p className="instructions">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
@@ -58,7 +78,7 @@ function App() {
             <div className="die-container">
                 {diceElems}
             </div>  
-            <button className='roll-button' onClick={roll} >Roll</button>
+            <button className='roll-button' onClick={roll} >{tenzies ? "New game" : "Roll"}</button>
         </main>
     )
 }
